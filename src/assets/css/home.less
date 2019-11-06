@@ -1,0 +1,420 @@
+.home-page{
+    width:100%;
+    height:100vh;
+    background: #f8f8f8;
+    // height: 100px;
+    padding:5.5rem 1.2rem 1.2rem;
+    overflow: auto;
+    .red{
+        color: #d00406;
+    }
+    .blue{
+        color: #0207e0;
+    }
+    .banner-box{
+        width: 100%;
+        height: 9rem;
+        background-image: url('/static/img/Powerball-banner.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        .banner-left{
+            display: flex;
+            justify-content: space-around;
+            width:59%;
+            // background: #eee;
+            height:100%;
+            align-items: center;
+            .left-body{
+                height:55%;
+                // background: #eee;
+            }
+            img{
+                width: 3.5rem;
+                height:3.5rem;
+            }
+            .txt1{
+                font-size: 1.4rem;
+                color: #ffffff;
+                margin-top:.8rem;
+            }
+            .txt2{
+                font-size: 2.4rem;
+                color: #ffffff;
+                margin-top:.6rem;
+                span{
+                    font-size:1.5rem;
+                }
+            }
+        }
+        .banner-right{
+            width:41%;
+            // display: flex;
+            // justify-content: center;
+            // align-items: center;
+            .right-box{
+                height:55%;
+                margin-top:3.2rem;
+                margin-left:17%;
+                text-align: left;
+            }
+            .txt1{
+                
+                .num{
+                    font-size: 1.4rem;
+                    color: #ffffff;
+                }
+                .num2{
+                    font-size: 1.2rem;
+	                color: #ffffff;
+                }
+            }
+            .time-box{
+                display: flex;
+                align-items: center;
+                text-align: center;
+                line-height: 2rem;
+                .mao{
+                    margin:0 .2rem;
+                    margin-right:.5rem;
+                    line-height: 1rem;
+                    margin-top: 0.6rem;
+                    color:#fff;
+                }
+                .item{
+                    width: 1.5rem;
+                    height: 2rem;
+                    background-color: #ffffff;
+                    border-radius: 2px;
+                    margin-top:.8rem;
+                    font-size: 1.4rem;
+                    color: #ff0002;
+                    margin-right:.3rem;
+                }
+            }
+        }
+    }
+    .box-detail{
+        background-color: #ffffff;
+        box-shadow: 0px .3rem 1rem 0px 
+            rgba(206, 206, 206, 0.4);
+        border-radius: .5rem;
+        padding:.8rem 1rem;
+        margin-top:1rem;
+        // padding:1rem;
+    }
+    .benner-2{
+        width: 100%;
+        // height: 4rem;
+        
+        
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .item{
+            flex:1;
+            display: flex;
+            // justify-content: space-between;
+            align-items: center;
+            margin-top:1.5rem;
+            margin-bottom:.2rem;
+            img{
+                width: 1.25rem;
+	            height: 1.25rem;
+            }
+            span{
+                font-size: 1.2rem;
+                color: #575757;
+                margin-left:.6rem;
+                text-align: left;
+            }
+        }
+        span{
+            font-size: 1rem;
+            
+            
+        }
+        .txt{
+            font-size: 1rem;
+        }
+        .txt2{
+            position: relative;
+            font-size: 1.4rem;
+            color: #414141;
+            margin-right:1rem;
+            .down{
+                position: absolute;
+                top:-.08rem;
+                margin-left:.3rem;
+            }
+            .box{
+                position: fixed;
+                width:100%;
+                height:100%;
+                background:rgba(0,0,0,.5);
+                top:0;
+                left:0;
+            }
+            .box-1{
+                position: absolute;
+                width:7.5rem;
+                // height:7.5rem;
+                background:linear-gradient(0deg,rgba(243,243,244,1) 0%,rgba(255,255,255,1) 100%);
+                border-radius:.5rem;
+                z-index: 100;
+                p{
+                    height:3rem;
+                    line-height: 3rem;
+                    font-size:1.4rem;
+                    font-family:PingFang-SC-Bold;
+                    font-weight:bold;
+                    color:rgba(65,65,65,1);
+                }
+                .bor{
+                    border-bottom:0.1rem solid rgba(220,220,220,1);
+                }
+            }
+        }
+        .red{
+            color: #d20002;
+        }
+        .blue{
+            color: #0207e0;
+        }
+    }
+    .menu-btn-box{
+        .btn{
+            width: 7.5rem;
+            height: 3rem;
+            background-color: #ffffff;
+            box-shadow: 0px .3rem 1rem 0px 
+                rgba(206, 206, 206, 0.6);
+            border:none;
+            outline: none;
+            // display: inline-block;
+            margin:0;
+            margin-top:2rem;
+            font-size: 1.4rem;
+	        color: #414141;
+            &.btn2{
+                background-color: #eeeeee;
+                color: #a1a1a1;
+                // border: solid 1px #dcdcdc;
+                // border-left:none;
+            }
+        }
+    }
+    .list-box{
+        width:98%;
+        margin:0 auto;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top:.8rem;
+        
+        
+        .item{
+            width: 10%;
+            height: 9.3vw;
+            margin:1.225%;
+            background-image: url('/static/img/Powerball-box.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            line-height: 10vw;
+            font-size: 1.2rem;
+            color: #ff0002;
+            &.active{
+                background-color: #d20002;
+                color: #ffffff;
+            }
+        }
+        .item2{
+            width: 10%;
+            height: 10vw;
+            margin:1.225%;
+            background-image: url('/static/img/Powerball-box2.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            line-height: 10vw;
+            font-size: 1.2rem;
+            color: #0207e0;
+            &.active2{
+                background-color: #0207e0;
+                color: #ffffff;
+            }
+        }
+    }
+    .btn-box{
+        display: flex;
+        justify-content: space-between;
+        .item{
+            width: 48%;
+            height: 3.8rem;
+            background-image: linear-gradient(0deg, 
+                #d40a0d 0%, 
+                #fa5c5e 100%);
+            border-radius: .5rem;
+            text-align: center;
+            line-height: 3.8rem;
+            color: #ffffff;
+            &.dis{
+                background-image: linear-gradient(0deg, 
+                    #ababab 0%, 
+                    #dadada 100%);
+            }
+        }
+    }
+    .bom-txt{
+        font-size: 1.2rem;
+        color: #484848;
+        margin-top:.4rem;
+    }
+    .model-box1,.model-box2{
+        position: fixed;
+        width:100%;
+        height:100vh;
+        top:0;
+        left:0;
+        overflow: hidden;
+        background: rgba(0, 0, 0, .5);
+        .box-1{
+            position: absolute;
+            width: 92%;
+            height: 44.6rem;
+            background-color: #ffffff;
+            box-shadow: 0px 6px 20px 0px 
+                rgba(206, 206, 206, 0.4);
+            border-radius: 10px;
+            top:10%;
+            left:50%;
+            margin-left:-46%;
+            padding:0 1.5rem;
+            .his-title{
+                font-size: 1.4rem;
+                color: #575757;
+                margin:2rem 0;
+                font-weight: 700;
+            }
+            .list-box2{
+                .list-item{
+                    display: flex;
+                    justify-content: space-around;
+                    border-top: solid 1px #e5e5e5;
+                    height:3.8rem;
+                    line-height: 3.8rem;
+                    span{
+                        // display: inline-block;
+                        font-size: 1.2rem;
+                        line-height: 3.8rem;
+                    }
+                    
+                }
+            }
+            .close{
+                position: absolute;
+                bottom:-3rem;
+                color:#fff;
+                font-size: 2.5rem;
+            }
+        }
+        .box-2{
+            width: 100%;
+            position: absolute;
+            height: 26.8rem;
+            background-color: #ffffff;
+            box-shadow: 0px -.3rem 1rem 0px 
+                rgba(206, 206, 206, 0.4);
+            border-radius: .5rem .5rem 0 0;
+            bottom:0;
+            left:0;
+            padding:0 1.2rem;
+            .his-title{
+                font-size: 1.4rem;
+                color: #414141;
+                padding: 1.3rem 0;
+            }
+            .num-list{
+                padding:2rem 0 1rem!important;
+            }
+            .model2-txt2{
+                font-size: 1rem;
+                color: #484848;
+                text-align: left;
+                padding:.8rem 0;
+                span{
+                    font-size: 1rem;
+                    color: #878787;
+                }
+            }
+            .btn2-box{
+                display: flex;
+                justify-content: space-between;
+                .item{
+                    width: 48%;
+                    height: 3.8rem;
+                    background-image: linear-gradient(0deg, 
+                        #d40a0d 0%, 
+                        #fa5c5e 100%);
+                    border-radius: .5rem;
+                    font-size: 1.5rem;
+                    border:none;
+                    outline: none;
+                    text-align: center;
+                    line-height: 3.8rem;
+                    color: #ffffff;
+                    &.dis{
+                        background-image: linear-gradient(0deg, 
+                            #ababab 0%, 
+                            #dadada 100%);
+                        border-radius: .5rem;
+                    }
+                }
+            }
+            .box-content{
+                // height: 14.1rem;
+                padding:1rem 0;
+                background-color: #eeeeee;
+                border-radius: .5rem;
+                p{  
+                    padding:2rem 0;
+                    span{
+                        padding:0 .8rem;
+                    }
+                }
+                .jsq-box{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin:1rem 0;
+                    .l-t{
+                        left:2.8rem;
+                    }
+                    .r-t{
+                        right:2rem
+                    }
+                    span{
+                        position: absolute;
+                        padding:0 1rem;
+                        font-size: 1.4rem;
+                        
+                    }
+                    .num{
+                        width:9rem;
+                        height: 3rem;
+                        background-color: #dcdcdc;
+                        line-height: 3rem;
+                    }
+                    button{
+                        width: 5rem;
+                        height: 3rem;
+                        background-color: #ffffff;
+                        border-radius: 2px;
+                        outline: none;
+                        border:none;
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,100 @@
+.lettery-page{
+    background: #f8f8f8;
+    height:100vh;
+    padding:5.5rem 1.2rem 1.2rem;
+    overflow: auto;
+    .banner{
+        width:100%;
+        // height:220px;
+        background:rgba(255,255,255,1);
+        border-radius:.5rem;
+        padding: 2.2rem 0;
+        .periods{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size:1.4rem;
+            font-family:PingFang-SC-Bold;
+            font-weight:bold;
+            color:rgba(34,34,34,1);
+            
+            i{
+                margin:0 3.2rem;
+            }
+        }
+        .ball-box{
+            display: flex;
+            justify-content: center;
+            margin-top:2.3rem;
+            .bor{
+                width:3rem;
+                height:3rem;
+                
+                border-radius:1.5rem;
+                
+                font-size:1.4rem;
+                font-family:PingFang-SC-Bold;
+                font-weight:bold;
+                color:rgba(210,0,2,1);
+                text-align: center;
+                line-height: 3rem;
+                margin-right:1rem;
+                &.i1{
+                    background:rgba(210,0,2,1);
+                    color:rgba(255,255,255,1);
+                }
+                &.blue{
+                    color:rgba(255,255,255,1);
+                    background:rgba(2,7,224,1);
+                }
+                &.blue-1{
+                    color:rgba(2,7,224,1);
+                }
+            }
+        }
+    }
+    .txt-1{
+        font-size:1rem;
+        font-family:MicrosoftYaHeiLight;
+        font-weight:300;
+        color:rgba(63,63,63,1);
+        text-align: left;
+        padding:1.1rem 0;
+        word-wrap: break-word;
+    }
+    .detail-box{
+        width:100%;
+        background:rgba(255,255,255,1);
+        border-radius:.5rem;
+        padding:2.2rem 1rem 1rem 1rem;
+        .title{
+            font-size:1.4rem;
+            font-family:MicrosoftYaHei-Bold;
+            font-weight:bold;
+            color:rgba(63,63,63,1);
+            text-align: left;
+        }
+        table{
+            width: 100%;
+            tr{
+                height:4rem;
+                
+                th{
+                    font-size:1.2rem;
+                    font-family:MicrosoftYaHeiLight;
+                    font-weight:300;
+                    color:rgba(97,97,97,1);
+                }
+                td{
+                    
+                }
+                .Amount{
+                    color:#D20002;
+                }
+            }
+            tr:nth-child(even){
+                background:rgba(250,250,250,1);
+            }
+        }
+    }
+}
