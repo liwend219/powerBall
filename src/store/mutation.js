@@ -8,8 +8,9 @@ export default {
     setBion (state,v) {
         state.bion = v
     },
-    setSocket(state) {
-		state.socket = Socket().initSocket()
+    setSocket(state,v) {
+        // state.socket = Socket().initSocket()
+        state.socket = v
     },
     setAssetsWs(state){
         state.assetsWs = Socket2().initSocket()
@@ -25,5 +26,14 @@ export default {
     },
     setLanguageType(state,v){
         state.languageType = v
+    },
+    setDecimal(state,v){
+        state.decimal = v
+    },
+    setMinAmount(state,v){
+        state.minAmount = v
+    },
+    setHeadTitle(state,v){
+        state.headTitle = v
     }
 }

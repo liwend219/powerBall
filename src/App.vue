@@ -3,7 +3,10 @@
     <!-- <img src="./assets/logo.png"> -->
     
     <Header></Header>
-    <router-view/>
+    <keep-alive>
+        <router-view v-if="$route.meta.keepAlive" />
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
   </div>
 </template>
 
@@ -11,6 +14,7 @@
 import {getSupportCion,getToken,userLogin,getAssets} from './common/init.js'
 import Header from '@/components/Header.vue'
 import {mapMutations,mapGetters,mapState} from 'vuex'
+import init from '@/lib/init'
 // import Socket from './lib/socket'
 export default {
   name: 'App',
@@ -29,50 +33,42 @@ export default {
     ]),
   },
   created(){
+      init(this)
+      this.onOpen()
+
+
       this.calc()
-      var token = this.$route.query.token
-      var userid = this.$route.query.userid
+      var codes = this.$route.query.code
+
       var lang = this.$route.query.lang
-      if(lang){
+      if(lang == 'zh-CN'){
         this.setLanguageType(lang)
+      }else{
+          this.setLanguageType('en-US')
       }
-      
-      let t = encodeURIComponent(token)
       this.tdata = {
-        userid:userid,
-        token:t
+        access_code:codes
       }
       getSupportCion().then(res => {
-        console.log(res)
         if(res.Code == 200){
-          this.setBion(res.Data.coin)
-          this.setAssetsWs()
-          this.setSocket()
-          
-          this.onOpen()
-          this.onOpen2()
-          this.onErr()
+          let obj = {}
+          let obj2 = {}
+          res.Data.forEach(val => {
+            obj[val.coin] = val.decimal
+            obj2[val.coin] = val.min_amount
+          })
+          this.setMinAmount(obj2)
+          this.setDecimal(obj)
         }
-        
       })
-      
-
-      //socket开启
-      
-      // var 2 = setInterval(() => {
-      //   console.log(self.getState)
-      // },1000)
-
-      
-      
-      // this.onMsg()
   },
   computed:{
     ...mapGetters([
       "getBalances",
       "getSocket",
       "getAssetsWs",
-      "getState"
+      "getState",
+      "getMinAmount"
     ])
   },
   methods:{
@@ -83,59 +79,18 @@ export default {
       "setAssetsWs",
       "setSession",
       "setCalcTime",
-      "setLanguageType"
+      "setLanguageType",
+      "setDecimal",
+      "setMinAmount"
     ]),
 
     onOpen(){
-      this.getAssetsWs.socket.onopen = (data) => {
-        var data2 = {
-          "method":"server.ping",
-          "params": [],
-          "id":104
-        }
-        this.getAssetsWs.send(data2)
-        this.login()
-      }
-    },
-
-    onOpen2(){
       this.getSocket.socket.onopen = (data) => {
-        console.log(data)
         this.socket1 = true
-      }
-    },
-    async onMsg(){
-      this.getAssetsWs.onmessage = (msg) => {
-        let data = JSON.parse(msg)
-        if(!data.error && data.id == 101){
-          // console.log(this.get)
-          let t = {
-              "method":"asset.subscribe",
-              "params":[this.getCoin], 
-              "id":1002
-          }
-          let t2 = {
-              "method":"balance.query", 
-              "params":[2,this.getCoin],  
-              "id":1003
-          }
-          this.getAssetsWs.send(t)
-          this.getAssetsWs.send(t2)
+        if(data.type == 'open'){
+            this.login()
         }
-        
       }
-    },
-
-    async onErr(){
-        var self = this
-        this.getAssetsWs.socket.onerror = (err) => {
-            self.getAssetsWs.socket.close();
-            setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
-              self.setAssetsWs() 
-              self.onOpen()
-              self.onErr()
-            }, 2000);
-        }
     },
     calc(){
         var self = this
@@ -155,9 +110,8 @@ export default {
             self.setCalcTime(tmp)
         },1000)
     },
-    login(tdata){
+    login(){
       userLogin(this.tdata).then(res => {
-        console.log(res)
         if(res.Code == 200){
           
           let session = res.Data.session
@@ -167,85 +121,22 @@ export default {
               token:session
             }
           }
-          var self = this
-          var timer2 = setInterval(() => {
-            if(self.socket1){
-              self.getSocket.send(t)
-              clearInterval(timer2)
-            }
-          },100)
-
           this.setSession(session)
+          this.getSocket.send(t)
+
+          
           getAssets(session).then(res => {
             if(res.Code == 200){
-              console.log('a')
-              this.setBalances(res.Data)
+              this.setBalances(res.Data.balances)
             }
           }).catch(err => {
             console.log(err)
           })
-
-
-          let tdata2 = res.Data.socket_sign
-
-          let assetsData = {
-              "method":"server.auth2",
-              "params":[tdata2.uid,tdata2.time,tdata2.from,tdata2.sign],
-              "id":101
-          }
-          this.getAssetsWs.send(assetsData)
-          this.getAssetsWs.socket.onmessage = (msg) => {
-            this.msgHandle(JSON.parse(msg.data))
-          }
-          
-
-          
-          
         }
-        
-        
-        
-        
       }).catch(err => {
         console.log(err)
       })
     },
-
-
-    msgHandle(data){
-      console.log(data)
-      if(!data.error && data.id == 101){
-          let t = {
-            "method":"asset.subscribe",
-            "params":[this.getCoin], 
-            "id":1002
-          }
-          let t2 = {
-            "method":"balance.query", 
-            "params":[2,this.getCoin],  
-            "id":1003
-          }
-          this.getAssetsWs.send(t)
-          this.getAssetsWs.send(t2)
-          this.getAssetsWs.socket.onmessage = (msg) => {
-            this.msgHandle(JSON.parse(msg.data))
-          }
-      }
-      if(data.error && data.id == 101){
-        this.$toast('身份验证出错')
-      }
-      if(data.id == 1002){
-        console.log('订阅成功')
-      }
-      if(data.method == 'asset.result'){
-        console.log('ooo')
-        this.setBalances(data.params.result)
-      }
-      if(data.id == 1003){
-        console.log('ooo22')
-        this.setBalances(data.result)
-      }
-    }
   }
 }
 </script>

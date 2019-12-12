@@ -1,6 +1,6 @@
 const config = {
-    http:'https://ballapi.hotbit.pro',
-    ws:'wss://ballapi.hotbit.pro/websocket',
+    http:'https://wnsballapi.hotbit.io',
+    ws:'wss://wnsballapi.hotbit.io/websocket',
     assetsWS:'wss://httpwsapi.hotbit.pro/websocket'
 }
 

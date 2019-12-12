@@ -103,16 +103,24 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
     data(){
         return {
 
         }
     },
+    created(){
+        this.setHeadTitle(this.$t['rule'])
+    },
     computed:{
         ...mapGetters([
             "getCoin"
+        ])
+    },
+    methods:{
+        ...mapMutations([
+            "setHeadTitle"
         ])
     }
 }

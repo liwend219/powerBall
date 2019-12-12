@@ -6,36 +6,59 @@ import BetRecord from '@/pages/BettingRecord'
 import Guide from '@/pages/Guide'
 import LotteryDetail from '@/pages/LotteryDetail'
 
+
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'HOME',
-      component: Home
+        path: '/',
+        name: 'HOME',
+        component: Home
     },
     {
-      path:'/history',
-      name:'Historical Winning Records',
-
-      component:HistoryList
+        path:'/history',
+        name:'',
+        component:HistoryList,
+        meta: {
+            keepAlive: true
+        }
     },
     {
-      path:'/bet/record',
-      name:'Betting History',
-      component:BetRecord
+        path:'/bet/record',
+        name:'',
+        component:BetRecord,
+        meta: {
+            keepAlive: true
+        }
     },
     {
-      path:'/guide',
-      name:'rule',
-      component:Guide
+        path:'/guide',
+        name:'',
+        component:Guide,
+        meta: {
+            keepAlive: true
+        }
     },
     {
-      path:'/lottery/detail',
-      name:'win_detail',
-      component:LotteryDetail
+        path:'/lottery/detail',
+        name:'win_detail',
+        component:LotteryDetail,
+        meta: {
+            keepAlive: true
+        }
     }
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+    if(to.path == '/' && from.path != '/'){
+        //后退
+        from.meta.keepAlive = false
+        to.meta.keepAlive = true
+    }
+    next()
+})
+export default router

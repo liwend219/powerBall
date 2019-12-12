@@ -1,11 +1,18 @@
 <template>
     <div class="home-page">
+        <div class="loading" v-if="showLoading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div class="banner-box">
             <div class="banner-left">
                 <img src="/static/img/Powerball-b.png" alt="">
                 <div class="left-body">
                     <p class="txt1">Powerball Jackpot</p>
-                    <p class="txt2">{{getBalances[Bion] && Number(getBalances[Bion].available).toFixed(4)}} <span>{{Bion}}</span></p>
+                    <p class="txt2">{{getBalances[Bion] && Number(getBalances[Bion]).toFixed(getDecimal[Bion])}} <span>{{Bion}}</span></p>
                 </div>
             </div>
             <div class="banner-right">
@@ -86,7 +93,7 @@
             </div>
         </div>
         <div class="btn-box">
-            <div :class="selectState?'item':'item dis'"  @click="random">Selection</div>
+            <div :class="selectState?'item':'item dis'"  @click="random">{{$t['Selection']}}</div>
             <div class="item" @click="bet">{{$t['bet']}}</div>
         </div>
         <p class="bom-txt">at least 4 white balls,1 red ball</p>
@@ -113,7 +120,7 @@
 
         <div class="model-box2" v-if="showModel2">
             <div class="box-2">
-                <p class="his-title">No.{{nowLottery.period + 1}}period</p>
+                <p class="his-title">{{$t['no_round']}}{{nowLottery.period + 1}}{{$t['no_round1']}}</p>
                 <div class="box-content">
                     <p class="num-list" style="display:inline-block">
                         <span class="red" v-for="(item,key) in numList" :key="key">{{item}}</span>
@@ -127,25 +134,17 @@
                         <button @click="add('Multiple')">+</button>
                         <span class="r-t">Period</span>
                     </div>
-                    <!-- <div class="jsq-box">
-                        <span class="l-t">Input</span>
-                        <button @click="reduce('count')">-</button>
-                        <div class="num">{{count}}</div>
-                        <button @click="add('count')">+</button>
-                        <span class="r-t">Times</span>
-                    </div> -->
                 </div>
-                <p class="model2-txt2"><span style="color:#000;">Single 1 Note <span style="color:red">{{Multiple}}</span> period</span>
+                <p class="model2-txt2"><span style="color:#000;">{{$t['Single_Note']}}<span style="color:red">{{Multiple}}</span> {{$t['period']}}</span>
                 <br>
-                <span style="color:#000;">Bet price: <span style="color:red">{{(number * 0.001 * Multiple)}}</span> {{Bion}}</span>
+                <span style="color:#000;">{{$t['bet_price']}}: <span style="color:red">{{(((number * getMinAmount[Bion] * 1000000) * Multiple) / 1000000)}}</span> {{Bion}}</span>
                 </p>
                 <div class="btn2-box">
-                    <button class="item dis" @click="showModel2 = false">Cancel</button>
-                    <button class="item" @click="betting">Payment</button>
+                    <button class="item dis" @click="showModel2 = false">{{$t['Cancel']}}</button>
+                    <button class="item" @click="betting">{{$t['Payment']}}</button>
                 </div>
             </div>
         </div>
-        <!-- <Toast :txt="txt"></Toast> -->
     </div>
 </template>
 <script>
@@ -164,7 +163,8 @@ export default {
             count:1,
             numList:[],
             blueNum:[],
-            Bion:'ETH',
+            showLoading:true,
+            // Bion:'ETH',
             showCheckBion:false,
             selectState:true,
             Balances:{},
@@ -192,56 +192,79 @@ export default {
         ...mapGetters([
             "getBalances",
             "getSession",
-            "getCalcTime"
+            "getCalcTime",
+            "getDecimal",
+            "getMinAmount",
+            "getBion"
         ]),
+        Bion(){
+            return this.getBion
+        },
         calcTime(){
             return this.getCalcTime
         }
     },
     created(){
-        let t = {
-            currency:this.Bion
-        }
-        // this.calc()
-        Promise.all([getSupportCion(),getPowerball(t)]).then(res => {
-            if(res[0].Code == 200){
-                this.Bion = res[0].Data[0].coin
-                this.setBion(res[0].Data[0].coin)
-                this.coinList = res[0].Data
-            }
-            if(res[1].Code == 200){
-                this.periods = res[1].Data
-                let t2 = {
-                    currency :this.Bion,
-                    period:parseInt(this.periods.period)-1
+        this.setHeadTitle(this.$t['home'])
+        
+        getSupportCion().then(res => {
+            if(res.Code == 200){
+                // this.Bion = res[0].Data[0].coin
+                if(!this.getBion){
+                    this.setBion(res.Data[0].coin)
                 }
-                getWinLottery(t2).then(res3 => {
-                    if(res3.Code == 200){
-                        let t3 = res3.Data
-                        let arr = res3.Data.winning_no.split(",")
-                        t3.win_no = arr
-                        this.nowLottery = t3
-                        
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
-                // this.nowLottery = res[1].Data
+                this.coinList = res.Data
+                this.getPowerBall()
             }
+            
+        }).catch(err => {
+
         })
 
-        this.random()
-        // getSupportCion().then(res => {
+        // this.calc()
+        // Promise.all([getSupportCion(),getPowerball(t)]).then(res => {
             
-        // }).catch(err => {
-        //     console.log(err)
+            
+            
+            
         // })
+
+        this.random()
     },
     methods:{
         ...mapMutations([
             "setBion",
-            "setBalances"
+            "setBalances",
+            "setHeadTitle"
         ]),
+        getPowerBall(){
+            let t = {
+                currency:this.Bion
+            }
+            getPowerball(t).then(res => {
+                if(res.Code == 200){
+                    this.periods = res.Data
+                    this.getWinInfo()
+                }
+            })
+        },
+        getWinInfo(){
+            let t2 = {
+                currency :this.Bion,
+                period:parseInt(this.periods.period)-1
+            }
+            getWinLottery(t2).then(res => {
+                if(res.Code == 200){
+                    let t3 = res.Data
+                    let arr = res.Data.winning_no.split(",")
+                    t3.win_no = arr
+                    this.nowLottery = t3
+                    this.showLoading = false
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
         bet(){
             // [N*(N-1)*(N-2)*...*1]/[6*5*4*3*2*1]*蓝球数
 
@@ -299,6 +322,7 @@ export default {
                 this.$toast('需要至少五个红球和一个蓝球')
                 return
             }
+            this.showLoading = true
             let t = {
                 type: 'buy_powerball',
                 payload: {
@@ -311,18 +335,17 @@ export default {
             }
             this.socket.send(t)
             this.socket.onmessage = (msg) => {
-
+                this.showLoading = false
                 let data = JSON.parse(msg)
                 this.showModel2 = false
                 if(data.type == 'error'){
                     this.$toast(data.payload)
                 }else if(data.type == 'buy_ack'){
                     this.$toast('投注成功')
-                    // getAssets(this.getSession).then(res => {
-                    //     this.setBalances(res.Data)
-                    // }).catch(err => {
-
-                    // })
+                    let assets = this.getBalances
+                    assets[data.payload.currency] = Number(data.payload.bizAmt)
+                    this.setBalances(assets)
+                    console.log(this.getBalances)
                 }
                 
             }
@@ -368,7 +391,7 @@ export default {
             
         },
         checkBion(name){
-            this.Bion = name;
+            // this.Bion = name;
             this.setBion(name)
             this.showCheckBion = false
         },

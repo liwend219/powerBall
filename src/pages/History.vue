@@ -28,7 +28,7 @@
 </template>
 <script>
 import {getLotteryHistory} from '../common/init'
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import qs from 'qs'
 export default {
     data(){
@@ -42,6 +42,7 @@ export default {
         ])
     },
     created(){
+        this.setHeadTitle(this.$t['Historical Winning Records'])
         let t = {
             currency:this.bion,
             pageSize:10,
@@ -60,6 +61,9 @@ export default {
         })
     },
     methods:{
+        ...mapMutations([
+            "setHeadTitle"
+        ]),
         detail(item){
             this.$router.push({
                 path:'/lottery/detail',

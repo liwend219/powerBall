@@ -15,5 +15,8 @@ export default {
     languageType:'en-US',
     language: {
 		...lang
-	},
+    },
+    decimal:{},
+    minAmount:0,
+    headTitle:''
 }

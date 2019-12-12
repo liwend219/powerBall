@@ -25,7 +25,17 @@ export default {
         nowin:'未中奖',
         win:'中奖了',
         seed:'种子',
-        win_detail:'中奖详情'
+        win_detail:'中奖详情',
+        Single_Note:'单期下',
+        bet_price:'押注金额',
+        period:'注',
+        Cancel:'取消',
+        Payment:'下注',
+        Selection:'随机选择',
+        "Historical Winning Records":'历史开奖',
+        "Betting History":'投注历史',
+        "rule":'玩法说明'
+
     },
     "en-US":{
         home:'Home Page',
@@ -53,6 +63,15 @@ export default {
         nowin:'You did not Win the Prize',
         win:'You Won the Prize',
         seed:'SEED',
-        win_detail:'Details of the Prize'
+        win_detail:'Details of the Prize',
+        bet_price:'Bet price',
+        Single_Note:'Single 1 Note ',
+        period:'period',
+        Cancel:'Cancel',
+        Payment:'Payment',
+        Selection:'Selection',
+        "Historical Winning Records":'Historical Winning Records',
+        "Betting History":'Betting History',
+        "rule":'rule'
     }
 }

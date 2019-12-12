@@ -27,5 +27,17 @@ export default {
     },
     $t(state){
         return state.language[state.languageType]
-    }
+    },
+    getDecimal(state){
+        return state.decimal
+    },
+    getMinAmount(state){
+        return state.minAmount
+    },
+    getHeadTitle(state){
+        return state.headTitle
+    },
+    getBion (state) {
+        return state.bion
+    },
 }

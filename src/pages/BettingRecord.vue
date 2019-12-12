@@ -2,7 +2,7 @@
     <div class="record-page">
         <div class="item" v-for="(item,key) in list" :key="key">
             <p class="txt1">
-                <span style="text-align:left">{{no_round}} {{item.period}} {{$t['no_round1']}} </span>
+                <span style="text-align:left">{{$t['no_round']}} {{item.period}} {{$t['no_round1']}} </span>
                 <span style="text-align:right">{{item.created | setTime}}</span>
             </p>
             <div class="txt2">
@@ -51,7 +51,7 @@
 </template>
 <script>
 import {getMyHistory} from '../common/init'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
     data(){
         return {
@@ -65,13 +65,13 @@ export default {
         ])
     },
     created(){
+        this.setHeadTitle(this.$t['Betting History'])
         let t = {
             pageSize:10,
             pageNum:1,
             currency:this.getCoin,
         }
         let session = this.getSession
-        console.log(session)
         getMyHistory(t,session).then(res => {
             if(res.Code == 200 && res.Data.list){
                 res.Data.list.forEach(val => {
@@ -83,6 +83,11 @@ export default {
         }).catch(err => {
             console.log(err)
         })
+    },
+    methods:{
+        ...mapMutations([
+            "setHeadTitle"
+        ])
     },
     filters:{
         setTime(val){

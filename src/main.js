@@ -7,6 +7,8 @@ import store from './store';
 import plugin from './plugin/index'
 import mixins from "./mixins";
 
+
+
 Vue.use(plugin)
 Vue.config.productionTip = false
 
