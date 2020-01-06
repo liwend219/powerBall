@@ -59,6 +59,9 @@ router.beforeEach((to, from, next) => {
         from.meta.keepAlive = false
         to.meta.keepAlive = true
     }
+    if(to.path == '/lottery/detail'){
+        to.meta.keepAlive = false
+    }
     next()
 })
 export default router

@@ -18,5 +18,6 @@ export default {
     },
     decimal:{},
     minAmount:0,
-    headTitle:''
+    headTitle:'',
+    endTime:0,
 }

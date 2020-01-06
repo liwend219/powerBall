@@ -35,5 +35,8 @@ export default {
     },
     setHeadTitle(state,v){
         state.headTitle = v
+    },
+    setEndTime(state,v){
+        state.endTime = v
     }
 }

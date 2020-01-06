@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 export default {
     // name:'h-header',
     data (){
@@ -21,12 +21,18 @@ export default {
     },
     created(){
         
-        // this.title = this.$route.name
+    },
+    methods:{
+        ...mapMutations([
+            "setHeadTitle"
+        ])
     },
     watch:{
-        // $route(val){
-        //     this.title = this.$route.name
-        // }
+        $route(val){
+            if(val.path == '/'){
+                this.setHeadTitle('Powerball Jackpot')
+            }
+        }
     }
 }
 </script>

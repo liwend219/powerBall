@@ -40,4 +40,7 @@ export default {
     getBion (state) {
         return state.bion
     },
+    getEndTime (state) {
+        return state.endTime
+    },
 }

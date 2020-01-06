@@ -37,7 +37,7 @@ export default {
       this.onOpen()
 
 
-      this.calc()
+    //   this.calc()
       var codes = this.$route.query.code
 
       var lang = this.$route.query.lang
@@ -49,18 +49,18 @@ export default {
       this.tdata = {
         access_code:codes
       }
-      getSupportCion().then(res => {
-        if(res.Code == 200){
-          let obj = {}
-          let obj2 = {}
-          res.Data.forEach(val => {
-            obj[val.coin] = val.decimal
-            obj2[val.coin] = val.min_amount
-          })
-          this.setMinAmount(obj2)
-          this.setDecimal(obj)
-        }
-      })
+    //   getSupportCion().then(res => {
+    //     if(res.Code == 200){
+    //       let obj = {}
+    //       let obj2 = {}
+    //       res.Data.forEach(val => {
+    //         obj[val.coin] = val.decimal
+    //         obj2[val.coin] = val.min_amount
+    //       })
+    //       this.setMinAmount(obj2)
+    //       this.setDecimal(obj)
+    //     }
+    //   })
   },
   computed:{
     ...mapGetters([
@@ -68,7 +68,8 @@ export default {
       "getSocket",
       "getAssetsWs",
       "getState",
-      "getMinAmount"
+      "getMinAmount",
+      "getEndTime"
     ])
   },
   methods:{
@@ -92,24 +93,7 @@ export default {
         }
       }
     },
-    calc(){
-        var self = this
-        var timer = setInterval(() => {
-            var date = new Date()
-            let m = date.getMinutes()
-            let s = date.getSeconds()
-            let st = (60-m-1)* 60 + (60-s)
-            let sm = parseInt(st/60)
-            let ss = st%60
-            let tmp = {
-              lm:parseInt(sm/10),
-              m:sm%10,
-              ls:parseInt(ss/10),
-              s:ss%10
-            }
-            self.setCalcTime(tmp)
-        },1000)
-    },
+    
     login(){
       userLogin(this.tdata).then(res => {
         if(res.Code == 200){

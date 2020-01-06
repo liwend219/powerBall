@@ -9,10 +9,21 @@
         </div>
         <div class="banner-box">
             <div class="banner-left">
-                <img src="/static/img/Powerball-b.png" alt="">
+                <img :src="`/static/img/${Bion}.png`" alt="">
                 <div class="left-body">
-                    <p class="txt1">Powerball Jackpot</p>
-                    <p class="txt2">{{getBalances[Bion] && Number(getBalances[Bion]).toFixed(getDecimal[Bion])}} <span>{{Bion}}</span></p>
+                    <!-- <p class="txt1">Powerball Jackpot</p> -->
+                    <p class="txt2">
+                        <span class="select" @click="showCheckBion = true">{{Bion}}<i class="fas fa-sort-down down"></i>
+                            <div class="box" v-if="showCheckBion">
+
+                            </div>
+                            <div v-if="showCheckBion" class="box-1">
+                                <p  v-for="(item,key) in coinList" :key="key" @click.stop="checkBion(item.coin)" >{{item.coin}}</p>
+                                
+                            </div>
+                        </span>
+                        <br>{{getBalances[Bion] && Number(getBalances[Bion]).toFixed(getDecimal[Bion])}}
+                    </p>
                 </div>
             </div>
             <div class="banner-right">
@@ -41,15 +52,7 @@
         </div>
         <div class="box-detail">
             <div class="benner-2">
-                <span class="txt2" @click="showCheckBion = true">{{Bion}}<i class="fas fa-sort-down down"></i>
-                    <div class="box" v-if="showCheckBion">
-
-                    </div>
-                    <div v-if="showCheckBion" class="box-1">
-                        <p  v-for="(item,key) in coinList" :key="key" @click.stop="checkBion(item.coin)" >{{item.coin}}</p>
-                        
-                    </div>
-                </span>
+                
                 
                 <span class="txt">{{nowLottery.period}}{{$t['record']}}</span>
                 <span class="red">{{nowLottery.win_no[0]}}</span>
@@ -96,7 +99,7 @@
             <div :class="selectState?'item':'item dis'"  @click="random">{{$t['Selection']}}</div>
             <div class="item" @click="bet">{{$t['bet']}}</div>
         </div>
-        <p class="bom-txt">at least 4 white balls,1 red ball</p>
+        <p class="bom-txt">At least 5 red balls and 1 blue ball</p>
 
 
         <div class="model-box1" v-if="showModel1">
@@ -137,7 +140,7 @@
                 </div>
                 <p class="model2-txt2"><span style="color:#000;">{{$t['Single_Note']}}<span style="color:red">{{Multiple}}</span> {{$t['period']}}</span>
                 <br>
-                <span style="color:#000;">{{$t['bet_price']}}: <span style="color:red">{{(((number * getMinAmount[Bion] * 1000000) * Multiple) / 1000000)}}</span> {{Bion}}</span>
+                <span style="color:#000;">{{$t['bet_price']}}: <span style="color:red">{{resultAmount}}</span> {{Bion}}</span>
                 </p>
                 <div class="btn2-box">
                     <button class="item dis" @click="showModel2 = false">{{$t['Cancel']}}</button>
@@ -150,6 +153,7 @@
 <script>
 import {getSupportCion,userLogin,getWinLottery,getPowerball,getAssets} from '../common/init.js'
 import {mapGetters,mapState,mapMutations} from 'vuex'
+import floatObj from '../lib/float.js'
 import qs from 'qs'
 export default {
     data(){
@@ -176,6 +180,7 @@ export default {
                 jackpot:0
             },
             number:1,
+            endTime:0,
             // calcTime:{
             //     lm:0,
             //     m:0,
@@ -195,8 +200,13 @@ export default {
             "getCalcTime",
             "getDecimal",
             "getMinAmount",
-            "getBion"
+            "getBion",
+            "getEndTime"
         ]),
+        resultAmount(){
+            let tmp = floatObj.multiply(this.number,this.getMinAmount[this.Bion])
+            return floatObj.multiply(tmp,this.Multiple)
+        },
         Bion(){
             return this.getBion
         },
@@ -205,11 +215,21 @@ export default {
         }
     },
     created(){
-        this.setHeadTitle(this.$t['home'])
-        
+        // this.calc()
+        // this.setHeadTitle(this.$t['home'])
+        this.setHeadTitle('Powerball Jackpot')
         getSupportCion().then(res => {
             if(res.Code == 200){
                 // this.Bion = res[0].Data[0].coin
+                let obj = {}
+                let obj2 = {}
+                res.Data.forEach(val => {
+                    obj[val.coin] = val.decimal
+                    obj2[val.coin] = val.min_amount
+                })
+                this.setMinAmount(obj2)
+                this.setDecimal(obj)
+
                 if(!this.getBion){
                     this.setBion(res.Data[0].coin)
                 }
@@ -218,7 +238,7 @@ export default {
             }
             
         }).catch(err => {
-
+            console.log(err)
         })
 
         // this.calc()
@@ -235,15 +255,23 @@ export default {
         ...mapMutations([
             "setBion",
             "setBalances",
-            "setHeadTitle"
+            "setHeadTitle",
+            "setEndTime",
+            "setCalcTime",
+            "setMinAmount",
+            "setDecimal"
         ]),
         getPowerBall(){
+            
             let t = {
                 currency:this.Bion
             }
             getPowerball(t).then(res => {
                 if(res.Code == 200){
                     this.periods = res.Data
+                    // this.endTime = res.data.endTime
+                    this.setEndTime(res.Data.endTime)
+                    this.calc()
                     this.getWinInfo()
                 }
             })
@@ -254,12 +282,13 @@ export default {
                 period:parseInt(this.periods.period)-1
             }
             getWinLottery(t2).then(res => {
+                this.showLoading = false
                 if(res.Code == 200){
                     let t3 = res.Data
                     let arr = res.Data.winning_no.split(",")
                     t3.win_no = arr
                     this.nowLottery = t3
-                    this.showLoading = false
+                    
                 }
             }).catch(err => {
                 console.log(err)
@@ -297,29 +326,32 @@ export default {
             this.number = num1/(num3*num4)*K
             // let count = [N*(N-1)*(N-2)*...*1]/[6*5*4*3*2*1]*K
         },
-        calc(){
-            var self = this
-            var timer = setInterval(() => {
-                var date = new Date()
-                let m = date.getMinutes()
-                let s = date.getSeconds()
-                let st = (60-m-1)* 60 + (60-s)
-                let sm = parseInt(st/60)
-                let ss = st%60
-                self.calcTime = {
-                    lm:parseInt(sm/10),
-                    m:sm%10,
-                    ls:parseInt(ss/10),
-                    s:ss%10
-                }
-            },1000)
-        },
+        // calc(){
+        //     var timer = setInterval(() => {
+        //         var date = new Date()
+        //         let m = date.getMinutes()
+        //         let s = date.getSeconds()
+        //         let st = (60-m-1)* 60 + (60-s)
+        //         let sm = parseInt(st/60)
+        //         let ss = st%60
+        //         this.calcTime = {
+        //             lm:parseInt(sm/10),
+        //             m:sm%10,
+        //             ls:parseInt(ss/10),
+        //             s:ss%10
+        //         }
+        //     },1000)
+        // },
         betting(){
             if(this.numList.length < 5){
-                this.$toast('需要至少五个红球和一个蓝球')
+                this.$toast(this.$t['tips1'])
                 return
-            }else if(!this.blueNum){
-                this.$toast('需要至少五个红球和一个蓝球')
+            }else if(this.blueNum.length == 0){
+                this.$toast(this.$t['tips1'])
+                return
+            }
+            if(this.getBalances[this.getBion] < (this.number * this.getMinAmount[this.Bion] * this.Multiple)){
+                this.$toast(this.$t['Insufficient account balance'])
                 return
             }
             this.showLoading = true
@@ -341,7 +373,7 @@ export default {
                 if(data.type == 'error'){
                     this.$toast(data.payload)
                 }else if(data.type == 'buy_ack'){
-                    this.$toast('投注成功')
+                    this.$toast(this.$t['Betting success'])
                     let assets = this.getBalances
                     assets[data.payload.currency] = Number(data.payload.bizAmt)
                     this.setBalances(assets)
@@ -349,6 +381,36 @@ export default {
                 }
                 
             }
+        },
+        calc(){
+            // let endtime
+            var timer = setInterval(() => {
+                
+                let date = new Date()
+                let sTime = this.getEndTime * 1000 - date.getTime()
+                if(sTime <= 1000){
+                    clearInterval(timer)
+                    let tmp = {
+                        lm:0,
+                        m:0,
+                        ls:0,
+                        s:0
+                    }
+                    this.setCalcTime(tmp)
+                    let timer2 = setTimeout(() => {
+                        this.getPowerBall()
+                    },2000)
+                }else{
+                    let ss = parseInt(sTime / 1000 % 60)
+                    let tmp = {
+                    lm:0,
+                    m:parseInt(sTime / 1000 / 60),
+                    ls:parseInt(ss/10),
+                    s:ss%10
+                    }
+                    this.setCalcTime(tmp)
+                }
+            },1000)
         },
         checkBox(idx){
             if(idx == 1){
@@ -394,6 +456,7 @@ export default {
             // this.Bion = name;
             this.setBion(name)
             this.showCheckBion = false
+            this.getWinInfo()
         },
         random(){
             if(!this.selectState){

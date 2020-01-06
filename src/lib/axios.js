@@ -14,19 +14,26 @@ var instance = axios.create({
 
 
 
-instance.interceptors.request.use((config) => {
-    if(config.method === 'post') {
-        config.data = qs.stringify({
-            ...config.data
+instance.interceptors.request.use((configs) => {
+    configs.url = configs.url+ `?version=${Interface.version}`
+    console.log(configs)
+    if(configs.method === 'post') {
+        // config.data = qs.stringify({
+        //     ...config.data
+        // })
+        let t = qs.stringify({
+            ...configs.data
         })
+        let t1 = t + `&version=${Interface.version}`
+        configs.data = t1
     } 
-    return config;
+    return configs;
 },(error) =>{
     return Promise.reject(error);
 });
 
-instance.interceptors.response.use((config) => {
-    return config.data
+instance.interceptors.response.use((configs) => {
+    return configs.data
 },(error) =>{
     return Promise.reject(error);
 });

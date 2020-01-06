@@ -29,6 +29,13 @@
                 </tr>
             </table>
         </div>
+        <div class="loading" v-if="showLoading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 </template>
 <script>
@@ -40,7 +47,8 @@ export default {
         return{
             periods:22,
             msg:'hello world',
-            detailData:''
+            detailData:'',
+            showLoading:false
         }
     },
     computed:{
@@ -53,6 +61,7 @@ export default {
     },
     created(){
         this.detailData = qs.parse(this.$route.query.data)
+        console.log(this.detailData)
         // currency: "ETH"
         // jackpot: "50000"
         // period: "2019000127"
@@ -68,7 +77,7 @@ export default {
     },
     methods:{
         lastPeriod(num){
-            
+            this.showLoading = true
             let t = parseInt(num);
             // console.log(t-3)
             let t2 = {
@@ -76,6 +85,7 @@ export default {
                 period:t-1
             }
             getWinLottery(t2).then(res => {
+                this.showLoading = false
                 if(res.Code == 200){
                     let arr = res.Data.winning_no.split(",")
                     let tmp = {
@@ -83,21 +93,30 @@ export default {
                         winning_no:arr
                     }
                     this.detailData = tmp
+                }else if(res.Code == 666){
+                    //没有记录
+                    this.$toast(this.$t['No record'])
+                }else if(res.Code == 667){
+                    //没有开奖
+                    this.$toast(this.$t['noopen'])
                 }else{
                     this.$toast(res.Message)
                 }
             }).catch(err => {
+                this.showLoading = false
                 console.log(err)
             })
 
         },
         nextPeriod(num){
+            this.showLoading = true
             let t = parseInt(num);
             let t2 = {
                 currency :this.bion,
                 period:t+1
             }
             getWinLottery(t2).then(res => {
+                this.showLoading = false
                 if(res.Code == 200){
                     let arr = res.Data.winning_no.split(",")
                     let tmp = {
@@ -105,10 +124,17 @@ export default {
                         winning_no:arr
                     }
                     this.detailData = tmp
+                }else if(res.Code == 666){
+                    //没有记录
+                    this.$toast(this.$t['No record'])
+                }else if(res.Code == 667){
+                    //没有开奖
+                    this.$toast(this.$t['noopen'])
                 }else{
                     this.$toast(res.Message)
                 }
             }).catch(err => {
+                this.showLoading = false
                 console.log(err)
             })
         }

@@ -10,10 +10,11 @@ export default {
         bet_history:'投注历史',
         rule_txt1:'Powerball的投注号码由红球号码和蓝球号码共同组成，红色号码在前，蓝色号码在后。红色号码从1-32中至少选择5个数字，顺序不限；蓝色号码从1-16中至少选择1个数字，“Powerball”奖级设置分为高等奖和低等奖。一等奖和二等奖为高等奖，三至七等奖为低等奖。',
         open_time:'开奖时间',
-        tip1:'每局投注时间60分钟，最后一分钟内无法投注。',
+        tip1:'每局投注时间5分钟，最后一分钟内无法投注。',
         peize_seeting:'奖项设置',
         peize_lev:'奖级',
         win_tj:'中奖条件',
+        Present:'奖金',
         win_rule:'中奖说明',
         prize:'奖金',
         no_round:'第',
@@ -34,8 +35,11 @@ export default {
         Selection:'随机选择',
         "Historical Winning Records":'历史开奖',
         "Betting History":'投注历史',
-        "rule":'玩法说明'
-
+        "rule":'玩法说明',
+        "Insufficient account balance":"账户余额不足",
+        "tips1":'需要至少五个红球和一个蓝球',
+        "Betting success":'投注成功',
+        "No record":'没有记录',
     },
     "en-US":{
         home:'Home Page',
@@ -48,10 +52,11 @@ export default {
         bet_history:'Betting History',
         rule_txt1:"The betting numbers of Powerball consist of the numbers of both red balls and blue balls. The numbers of red balls are displayed ahead of the number of blue balls. The users are required to select at least 5 numbers from number 1 to number 32 of the red numbers in random order, and then select at least 1 number from number 1 to number 16 of the blue numbers. The levels of Powerball's prizes are categorized into top level and ordinary level, in which the top prize and the second prize are categorized as top level, and the 3rd to 7th prizes are categorized as ordinary level.",
         open_time:'Drawing Date',
-        tip1:'The duration for betting placement of each round will be 60 minutes. Users are not allowed to place their bets within the last minute of the abovementioned duration.',
+        tip1:'The duration for betting placement of each round will be 5 minutes. Users are not allowed to place their bets within the last minute of the abovementioned duration.',
         peize_seeting:'Prize Setting',
-        peize_lev:'Prize Levels',
+        peize_lev:'Rewards',
         win_tj:'Requirements for Winning',
+        Present:'Present',
         win_rule:'Rules and Regulations for Winning',
         prize:'Prize',
         no_round:'The',
@@ -72,6 +77,10 @@ export default {
         Selection:'Selection',
         "Historical Winning Records":'Historical Winning Records',
         "Betting History":'Betting History',
-        "rule":'rule'
+        "rule":'Rule',
+        "Insufficient account balance":"Insufficient account balance",
+        "tips1":'Need at least five red balls and one blue ball',
+        "Betting success":'betting success',
+        "No record":'No record',
     }
 }
